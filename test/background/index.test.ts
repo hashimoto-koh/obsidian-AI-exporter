@@ -143,6 +143,24 @@ describe('background/index', () => {
       );
     });
 
+    it('accepts messages from www.genspark.ai', async () => {
+      const sendResponse = vi.fn();
+      capturedListener(
+        { action: 'getSettings' },
+        {
+          tab: {
+            url: 'https://www.genspark.ai/spark/sample/674b196e-7ed3-408d-bb5e-5180741703b7',
+          },
+        } as chrome.runtime.MessageSender,
+        sendResponse
+      );
+
+      await vi.waitFor(() => expect(sendResponse).toHaveBeenCalled());
+      expect(sendResponse).not.toHaveBeenCalledWith(
+        expect.objectContaining({ error: 'Unauthorized' })
+      );
+    });
+
     it('rejects messages from unauthorized origins', () => {
       const sendResponse = vi.fn();
       capturedListener(

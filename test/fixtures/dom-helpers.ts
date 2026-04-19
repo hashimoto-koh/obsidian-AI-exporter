@@ -134,6 +134,93 @@ export function resetLocation(): void {
 }
 
 /**
+ * Set window.location for Genspark agents URL testing
+ */
+export function setGensparkLocation(
+  conversationId: string = '674b196e-7ed3-408d-bb5e-5180741703b7',
+  hostname: 'www.genspark.ai' | 'genspark.ai' = 'www.genspark.ai'
+): void {
+  const pathname = '/agents';
+  const search = `?id=${conversationId}`;
+  Object.defineProperty(window, 'location', {
+    value: {
+      hostname,
+      pathname,
+      href: `https://${hostname}${pathname}${search}`,
+      origin: `https://${hostname}`,
+      protocol: 'https:',
+      host: hostname,
+      search,
+      hash: '',
+    },
+    writable: true,
+    configurable: true,
+  });
+}
+
+/**
+ * Set window.location for non-Genspark URL testing
+ */
+export function setNonGensparkLocation(hostname: string, pathname = '/'): void {
+  Object.defineProperty(window, 'location', {
+    value: {
+      hostname,
+      pathname,
+      href: `https://${hostname}${pathname}`,
+      origin: `https://${hostname}`,
+      protocol: 'https:',
+      host: hostname,
+      search: '',
+      hash: '',
+    },
+    writable: true,
+    configurable: true,
+  });
+}
+
+/**
+ * Create minimal Genspark chat DOM
+ */
+export function createGensparkPage(userText: string, assistantHtml: string): string {
+  return `
+    <div class="main-inner j-chat-agent super_agent chat_agent">
+      <div class="general-chat-wrapper j-general-chat-wrapper">
+        <div class="chat-wrapper">
+          <div class="conversation-wrapper">
+            <div class="conversation-content">
+              <div class="conversation-statement user plain-text">
+                <div class="conversation-item-desc user">
+                  <div class="bubble" message-content-id="0">
+                    <div class="desc">
+                      <div class="content">
+                        <pre><code>${escapeHtml(userText)}</code></pre>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="conversation-statement assistant plain-text">
+                <div class="conversation-item-desc assistant">
+                  <div class="bubble" message-content-id="1">
+                    <div class="desc">
+                      <div class="content">
+                        <div class="markdown-viewer">
+                          <div>${assistantHtml}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/**
  * Create title element for Gemini page
  */
 export function setGeminiTitle(title: string): void {

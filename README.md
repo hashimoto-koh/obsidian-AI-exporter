@@ -1,6 +1,6 @@
 # Obsidian AI Exporter
 
-Chrome Extension that exports AI conversations from Google Gemini, Claude AI, ChatGPT, and Perplexity to Obsidian via the Local REST API.
+Chrome Extension that exports AI conversations from Google Gemini, Claude AI, ChatGPT, Perplexity, and Genspark to Obsidian via the Local REST API.
 
 [日本語版はこちら](README.ja.md)
 
@@ -9,7 +9,7 @@ Chrome Extension that exports AI conversations from Google Gemini, Claude AI, Ch
 
 ## Features
 
-- **Multi-platform support**: Export from Google Gemini, Claude AI, ChatGPT, and Perplexity
+- **Multi-platform support**: Export from Google Gemini, Claude AI, ChatGPT, Perplexity, and Genspark
 - **One-click export**: Floating "Sync" button on supported AI pages
 - **Multiple output options**: Save to Obsidian, download as file, or copy to clipboard
 - **Deep Research support**: Export Gemini Deep Research, Claude Extended Thinking, and Perplexity Deep Research reports
@@ -298,4 +298,3 @@ MIT
 Contributions are welcome! Please read the [CLAUDE.md](CLAUDE.md) for development guidelines.
 
 [![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=sho7650&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/sho7650)
-

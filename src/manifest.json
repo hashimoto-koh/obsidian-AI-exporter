@@ -24,6 +24,8 @@
     "https://chatgpt.com/*",
     "https://www.perplexity.ai/*",
     "https://notebooklm.google.com/*",
+    "https://www.genspark.ai/*",
+    "https://genspark.ai/*",
     "http://127.0.0.1/*",
     "https://127.0.0.1/*"
   ],
@@ -41,7 +43,9 @@
         "https://claude.ai/*",
         "https://chatgpt.com/*",
         "https://www.perplexity.ai/*",
-        "https://notebooklm.google.com/*"
+        "https://notebooklm.google.com/*",
+        "https://www.genspark.ai/*",
+        "https://genspark.ai/*"
       ],
       "js": [
         "src/content/index.ts"

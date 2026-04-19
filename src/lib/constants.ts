@@ -109,6 +109,8 @@ export const ALLOWED_ORIGINS = [
   'https://chatgpt.com',
   'https://www.perplexity.ai',
   'https://notebooklm.google.com',
+  'https://www.genspark.ai',
+  'https://genspark.ai',
 ] as const;
 
 /**
@@ -131,7 +133,14 @@ export const VALID_OUTPUT_DESTINATIONS = ['obsidian', 'file', 'clipboard'] as co
 /**
  * Valid AI platform sources
  */
-export const VALID_SOURCES = ['gemini', 'claude', 'perplexity', 'chatgpt', 'notebooklm'] as const;
+export const VALID_SOURCES = [
+  'gemini',
+  'claude',
+  'perplexity',
+  'chatgpt',
+  'notebooklm',
+  'genspark',
+] as const;
 
 /**
  * Valid message format options for template rendering
@@ -147,6 +156,7 @@ export const PLATFORM_LABELS: Record<AIPlatform, string> = {
   chatgpt: 'ChatGPT',
   perplexity: 'Perplexity',
   notebooklm: 'NotebookLM',
+  genspark: 'Genspark',
 } as const;
 
 // ============================================================

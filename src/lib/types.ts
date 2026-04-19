@@ -5,7 +5,13 @@
 /**
  * Supported AI platform identifiers
  */
-export type AIPlatform = 'gemini' | 'claude' | 'perplexity' | 'chatgpt' | 'notebooklm';
+export type AIPlatform =
+  | 'gemini'
+  | 'claude'
+  | 'perplexity'
+  | 'chatgpt'
+  | 'notebooklm'
+  | 'genspark';
 
 /**
  * Represents a single message in a conversation

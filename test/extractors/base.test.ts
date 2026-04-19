@@ -348,6 +348,11 @@ describe('BaseExtractor', () => {
       expect(extractor.testGetPageTitle()).toBe('Test Topic');
     });
 
+    it('strips " - Genspark" suffix', () => {
+      document.title = 'Test Topic - Genspark';
+      expect(extractor.testGetPageTitle()).toBe('Test Topic');
+    });
+
     it('strips " | Gemini" suffix', () => {
       document.title = 'Test Topic | Gemini';
       expect(extractor.testGetPageTitle()).toBe('Test Topic');
@@ -359,7 +364,7 @@ describe('BaseExtractor', () => {
     });
 
     it('returns null when title is only a platform name', () => {
-      for (const name of ['Gemini', 'Google Gemini', 'Claude', 'ChatGPT', 'Perplexity']) {
+      for (const name of ['Gemini', 'Google Gemini', 'Claude', 'ChatGPT', 'Perplexity', 'Genspark']) {
         document.title = name;
         expect(extractor.testGetPageTitle()).toBeNull();
       }

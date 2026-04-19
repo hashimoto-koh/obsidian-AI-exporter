@@ -54,7 +54,7 @@
     "description": "Collapsible section title for advanced settings"
   },
   "settings_vaultPathHelp": {
-    "message": "Use {platform} to auto-organize by source (gemini, claude, chatgpt, perplexity)",
+    "message": "Use {platform} to auto-organize by source (gemini, claude, chatgpt, perplexity, genspark)",
     "description": "Help text explaining template variable for vault path"
   },
   "settings_messageFormat": {

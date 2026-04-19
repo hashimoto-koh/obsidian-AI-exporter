@@ -1,6 +1,6 @@
 # Obsidian AI Exporter
 
-Google Gemini、Claude AI、ChatGPT、Perplexity の会話を Obsidian に保存する Chrome 拡張機能です。Local REST API を使用してローカル環境で動作します。
+Google Gemini、Claude AI、ChatGPT、Perplexity、Genspark の会話を Obsidian に保存する Chrome 拡張機能です。Local REST API を使用してローカル環境で動作します。
 
 [English version](README.md)
 
@@ -9,7 +9,7 @@ Google Gemini、Claude AI、ChatGPT、Perplexity の会話を Obsidian に保存
 
 ## 機能
 
-- **マルチプラットフォーム対応**: Google Gemini、Claude AI、ChatGPT、Perplexity からエクスポート
+- **マルチプラットフォーム対応**: Google Gemini、Claude AI、ChatGPT、Perplexity、Genspark からエクスポート
 - **ワンクリック保存**: 対応 AI ページに表示される「Sync」ボタンで即座に保存
 - **複数の出力オプション**: Obsidian への保存、ファイルダウンロード、クリップボードへコピー
 - **Deep Research 対応**: Gemini Deep Research、Claude Extended Thinking、Perplexity Deep Research レポートを保存

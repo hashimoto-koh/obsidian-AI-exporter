@@ -8,6 +8,7 @@ import { ClaudeExtractor } from './extractors/claude';
 import { ChatGPTExtractor } from './extractors/chatgpt';
 import { PerplexityExtractor } from './extractors/perplexity';
 import { NotebookLMExtractor } from './extractors/notebooklm';
+import { GensparkExtractor } from './extractors/genspark';
 import { extractErrorMessage } from '../lib/error-utils';
 import type { IConversationExtractor } from '../lib/types';
 import { conversationToNote } from './markdown';
@@ -42,6 +43,8 @@ const PLATFORM_ROOT_SELECTORS: Record<string, string[]> = {
   'chatgpt.com': ['main', '#__next'],
   'www.perplexity.ai': ['main', '#__next'],
   'notebooklm.google.com': ['main', '#app-container'],
+  'www.genspark.ai': ['main', '#__next'],
+  'genspark.ai': ['main', '#__next'],
 };
 
 /** Conversation container selectors to detect when content is ready */
@@ -135,23 +138,19 @@ function waitForConversationContainer(): Promise<void> {
  * @see CodeQL: js/incomplete-url-substring-sanitization
  */
 function getExtractor(): IConversationExtractor | null {
-  const hostname = window.location.hostname;
+  const candidates: IConversationExtractor[] = [
+    new GeminiExtractor(),
+    new ClaudeExtractor(),
+    new ChatGPTExtractor(),
+    new PerplexityExtractor(),
+    new NotebookLMExtractor(),
+    new GensparkExtractor(),
+  ];
 
-  // Strict comparison prevents attacks like "evil-gemini.google.com.attacker.com"
-  if (hostname === 'gemini.google.com') {
-    return new GeminiExtractor();
-  }
-  if (hostname === 'claude.ai') {
-    return new ClaudeExtractor();
-  }
-  if (hostname === 'chatgpt.com') {
-    return new ChatGPTExtractor();
-  }
-  if (hostname === 'www.perplexity.ai') {
-    return new PerplexityExtractor();
-  }
-  if (hostname === 'notebooklm.google.com') {
-    return new NotebookLMExtractor();
+  for (const extractor of candidates) {
+    if (extractor.canExtract()) {
+      return extractor;
+    }
   }
 
   return null;
@@ -186,7 +185,9 @@ async function initialize(): Promise<void> {
   console.info(`[G2O] Using ${extractor.platform} extractor`);
 
   // Wait for conversation container (L-03)
-  await waitForConversationContainer();
+  if (extractor.platform !== 'genspark') {
+    await waitForConversationContainer();
+  }
 
   // Apply throttle to sync handler (NEW-06)
   const throttledHandleSync = throttle(handleSync, EVENT_THROTTLE_DELAY);
