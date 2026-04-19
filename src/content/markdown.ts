@@ -26,15 +26,22 @@ export { convertDeepResearchContent } from './markdown-deep-research';
 /**
  * Generate sanitized filename from title
  */
-export function generateFileName(title: string, conversationId: string): string {
+export function generateFileName(
+  title: string,
+  conversationId: string,
+  date: Date = new Date(),
+  timezone: string = 'UTC'
+): string {
   const sanitized = title
     .toLowerCase()
     .replace(/[^a-z0-9\u3000-\u9fff\uac00-\ud7af]+/g, '-') // Keep Japanese/Korean chars
     .replace(/^-+|-+$/g, '')
     .substring(0, MAX_FILENAME_BASE_LENGTH);
 
+  const formattedDate = formatDateWithTimezone(date, timezone);
+  const datePrefix = `${formattedDate.slice(2, 4)}${formattedDate.slice(5, 7)}${formattedDate.slice(8, 10)}`;
   const idSuffix = conversationId.substring(0, FILENAME_ID_SUFFIX_LENGTH);
-  return `${sanitized || 'conversation'}-${idSuffix}.md`;
+  return `${datePrefix}-${sanitized || 'conversation'}-${idSuffix}.md`;
 }
 
 /**
@@ -94,7 +101,7 @@ export function conversationToNote(data: ConversationData, options: TemplateOpti
   }
 
   // Generate filename and content hash
-  const fileName = generateFileName(data.title, data.id);
+  const fileName = generateFileName(data.title, data.id, new Date(), timezone);
   const contentHash = generateContentHash(body);
 
   return {

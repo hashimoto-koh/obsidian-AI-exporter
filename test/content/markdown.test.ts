@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   htmlToMarkdown,
   escapeAngleBrackets,
@@ -371,38 +371,46 @@ describe('escapeAngleBrackets', () => {
 });
 
 describe('generateFileName', () => {
-  it('creates filename from title and ID', () => {
-    expect(generateFileName('Hello World', 'abc123def456')).toBe('hello-world-abc123de.md');
+  const fixedDate = new Date('2026-04-19T03:04:05Z');
+
+  it('creates filename from title and ID with YYMMDD prefix', () => {
+    expect(generateFileName('Hello World', 'abc123def456', fixedDate, 'Asia/Tokyo')).toBe(
+      '260419-hello-world-abc123de.md'
+    );
   });
 
   it('preserves Japanese characters', () => {
-    const result = generateFileName('日本語テスト', 'abc123def456');
-    expect(result).toContain('日本語テスト');
-    expect(result.endsWith('.md')).toBe(true);
+    const result = generateFileName('日本語テスト', 'abc123def456', fixedDate, 'Asia/Tokyo');
+    expect(result).toBe('260419-日本語テスト-abc123de.md');
   });
 
   it('preserves Korean characters', () => {
-    const result = generateFileName('한글테스트', 'abc123def456');
-    expect(result).toContain('한글테스트');
+    const result = generateFileName('한글테스트', 'abc123def456', fixedDate, 'Asia/Tokyo');
+    expect(result).toBe('260419-한글테스트-abc123de.md');
   });
 
-  it('removes special characters', () => {
-    expect(generateFileName('Test: Special!', 'abc123def456')).toBe('test-special-abc123de.md');
+  it('replaces special characters with hyphens', () => {
+    expect(generateFileName('Test: Special!', 'abc123def456', fixedDate, 'Asia/Tokyo')).toBe(
+      '260419-test-special-abc123de.md'
+    );
   });
 
-  it('truncates long titles to 50 characters', () => {
+  it('truncates long titles', () => {
     const longTitle = 'a'.repeat(100);
-    const result = generateFileName(longTitle, 'abc123def456');
-    // 50 chars title + '-' + 8 char ID suffix + '.md'
-    expect(result.length).toBeLessThanOrEqual(50 + 1 + 8 + 3);
+    const result = generateFileName(longTitle, 'abc123def456', fixedDate, 'Asia/Tokyo');
+    expect(result).toBe(`260419-${'a'.repeat(50)}-abc123de.md`);
   });
 
-  it('handles empty title with fallback', () => {
-    expect(generateFileName('', 'abc123def456')).toBe('conversation-abc123de.md');
+  it('uses fallback name when title is empty', () => {
+    expect(generateFileName('', 'abc123def456', fixedDate, 'Asia/Tokyo')).toBe(
+      '260419-conversation-abc123de.md'
+    );
   });
 
-  it('handles title with only special characters', () => {
-    expect(generateFileName('!!!@@@###', 'abc123def456')).toBe('conversation-abc123de.md');
+  it('uses fallback name when title sanitizes to empty', () => {
+    expect(generateFileName('!!!@@@###', 'abc123def456', fixedDate, 'Asia/Tokyo')).toBe(
+      '260419-conversation-abc123de.md'
+    );
   });
 });
 
@@ -423,6 +431,15 @@ describe('generateContentHash', () => {
 });
 
 describe('conversationToNote', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-04-19T03:04:05Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   const mockData: ConversationData = {
     id: 'conv123',
     title: 'Test Conversation',
@@ -488,7 +505,7 @@ describe('conversationToNote', () => {
 
   it('generates fileName', () => {
     const note = conversationToNote(mockData, defaultOptions);
-    expect(note.fileName).toBe('test-conversation-conv123.md');
+    expect(note.fileName).toBe('260419-test-conversation-conv123.md');
   });
 
   it('formats as blockquote when specified', () => {
